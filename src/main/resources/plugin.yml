@@ -1,0 +1,58 @@
+name: Hardcourse
+version: '${project.version}'
+main: com.denied403.hardcoursecheckpoints.HardcourseCheckpoints
+api-version: '1.21'
+depend: [Core403, Vault]
+author: "403Denied"
+description: "Hardcourse Checkpoints plugin for managing player checkpoints and commands."
+prefix: "HARDCOURSE"
+
+commands:
+  resetcheckpoint:
+    description: "Reset the checkpoint for a specific player."
+    usage: "/resetcheckpoint <player> confirm"
+    permission: op
+  resetallcheckpoints:
+    description: "Reset all player checkpoints."
+    usage: "/resetallcheckpoints confirm"
+    permission: op
+  discord:
+    description: "Join our discord."
+    usage: "/discord"
+  apply:
+    description: "Apply for staff."
+    usage: "/apply"
+  clock:
+    description: "Lost your clock?"
+    usage: "/clock"
+  runchatgame:
+    description: "Run a chat game."
+    usage: "/runchatgame [word]"
+    permission: op
+    aliases: rcg
+  endchatgame:
+    description: "End a chat game early."
+    usage: "/endchatgame"
+    permission: op
+    aliases: ecg
+  getlevel:
+    description: "Check the level of another player."
+    usage: "/getlevel [player]"
+  restartforupdate:
+    description: "Restart the server for an update."
+    usage: "/restartforupdate"
+    permission: hardcourse.admin
+  setlevel:
+    description: "Set the level of a player."
+    usage: "/setlevel <player> <level>"
+    permission: hardcourse.admin
+  reloadhardcourseconfig:
+    description: "Reload the Hardcourse plugin configuration."
+    usage: "/reloadhardcourseconfig"
+    permission: hardcourse.admin
+    aliases: [reloadhardcourse, rconfig, reloadconfig]
+  points:
+    description: "Manage player points."
+    usage: "/points <player> set|give|remove <amount>"
+    permission: hardcourse.points.manage
+    aliases: [pts]
