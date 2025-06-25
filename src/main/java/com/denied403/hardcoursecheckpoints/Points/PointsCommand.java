@@ -7,27 +7,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 public class PointsCommand implements CommandExecutor {
 
-    private static final HashMap<UUID, Integer> playerPoints = new HashMap<>();
+    private final PointsManager pointsManager;
 
-    public static int getPoints(UUID player) {
-        return playerPoints.getOrDefault(player, 0);
-    }
-
-    public static void setPoints(UUID player, int points) {
-        playerPoints.put(player, points);
-    }
-
-    public static void addPoints(UUID player, int amount) {
-        playerPoints.put(player, getPoints(player) + amount);
-    }
-
-    public static void removePoints(UUID player, int amount) {
-        playerPoints.put(player, Math.max(0, getPoints(player) - amount));
+    public PointsCommand(PointsManager pointsManager) {
+        this.pointsManager = pointsManager;
     }
 
     @Override
@@ -69,28 +56,27 @@ public class PointsCommand implements CommandExecutor {
 
         switch (action) {
             case "set":
-                setPoints(targetUUID, amount);
+                pointsManager.setPoints(targetUUID, amount);
                 sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + "Set " + ChatColor.RED + targetName + ChatColor.WHITE + "'s points to " + ChatColor.RED + amount + ChatColor.WHITE + ".");
                 target.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + "Your points have been set to " + ChatColor.RED + amount + ChatColor.WHITE + " by " + ChatColor.RED + sender.getName() + ChatColor.WHITE + ".");
                 break;
 
             case "give":
-                addPoints(targetUUID, amount);
+                pointsManager.addPoints(targetUUID, amount);
                 sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + "Gave " + ChatColor.RED + amount + ChatColor.WHITE + " points to " + ChatColor.RED + targetName + ChatColor.WHITE + ".");
                 target.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + "You received " + ChatColor.RED + amount + ChatColor.WHITE + " points from " + ChatColor.RED + sender.getName() + ChatColor.WHITE + ".");
                 break;
 
             case "remove":
-                removePoints(targetUUID, amount);
+                pointsManager.removePoints(targetUUID, amount);
                 sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + "Removed " + ChatColor.RED + amount + ChatColor.WHITE + " points from " + ChatColor.RED + targetName + ChatColor.WHITE + ".");
                 target.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + ChatColor.RED + amount + ChatColor.WHITE + " points were removed by " + ChatColor.RED + sender.getName() + ChatColor.WHITE + ".");
                 break;
 
             default:
-                sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE " + ChatColor.WHITE + "Invalid action. Use set, give, or remove.");
+                sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "HARDCOURSE" + ChatColor.WHITE + "Invalid action. Use set, give, or remove.");
                 break;
         }
-
         return true;
     }
 }

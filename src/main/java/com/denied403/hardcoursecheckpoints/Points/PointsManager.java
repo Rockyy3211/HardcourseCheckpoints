@@ -2,28 +2,26 @@ package com.denied403.hardcoursecheckpoints.Points;
 
 import com.denied403.hardcoursecheckpoints.HardcourseCheckpoints;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
 public class PointsManager {
 
     private final HardcourseCheckpoints plugin;
-    private final FileConfiguration config;
 
     public PointsManager(HardcourseCheckpoints plugin) {
         this.plugin = plugin;
-        this.config = plugin.getConfig();
     }
 
     public int getPoints(UUID playerUUID) {
-        return config.getInt("points." + playerUUID.toString(), 0);
+        return HardcourseCheckpoints.playerPoints.getOrDefault(playerUUID, 0);
     }
 
     public void setPoints(UUID playerUUID, int points) {
-        config.set("points." + playerUUID.toString(), points);
-        plugin.saveConfig();
+        HardcourseCheckpoints.playerPoints.put(playerUUID, points);
+        plugin.savePoints();
     }
 
     public void addPoints(UUID playerUUID, int amount) {
@@ -37,10 +35,22 @@ public class PointsManager {
         setPoints(playerUUID, newAmount);
     }
 
-    // Send the points in the action bar above the hotbar
     public void sendPointsActionBar(Player player) {
         int points = getPoints(player.getUniqueId());
         String message = ChatColor.RED + "Points: " + ChatColor.WHITE + points;
         player.sendActionBar(message);
+    }
+
+    public void sendTemporaryPointsMessage(Player player, String tempMessage, long durationTicks) {
+        // Show temporary message immediately
+        player.sendActionBar(tempMessage);
+
+        // Schedule task to send the normal points message after the specified delay
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                sendPointsActionBar(player);
+            }
+        }.runTaskLater(plugin, durationTicks);
     }
 }

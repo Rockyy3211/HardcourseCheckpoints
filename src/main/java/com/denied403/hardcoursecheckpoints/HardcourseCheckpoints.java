@@ -6,6 +6,7 @@ import com.denied403.hardcoursecheckpoints.Events.*;
 import com.denied403.hardcoursecheckpoints.Chat.ChatReactions;
 import com.denied403.hardcoursecheckpoints.Points.PointsCommand;
 import com.denied403.hardcoursecheckpoints.Points.PointsManager;
+import com.denied403.hardcoursecheckpoints.Points.PointsTabCompleter;
 import com.denied403.hardcoursecheckpoints.Utils.PermissionChecker;
 import com.denied403.hardcoursecheckpoints.Utils.WordSyncListener;
 import org.bukkit.Bukkit;
@@ -55,14 +56,6 @@ public final class HardcourseCheckpoints extends JavaPlugin implements Listener 
         highestCheckpoint.put(player, checkpoint);
     }
 
-    // --- New: Points getters and setters ---
-    public static int getPoints(UUID player) {
-        return playerPoints.getOrDefault(player, 0);
-    }
-
-    public static void setPoints(UUID player, int points) {
-        playerPoints.put(player, points);
-    }
 
     public static HardcourseCheckpoints plugin;
     private HardcourseDiscord discordBot;
@@ -128,6 +121,7 @@ public final class HardcourseCheckpoints extends JavaPlugin implements Listener 
 
         getCommand("resetcheckpoint").setExecutor(new CheckpointCommands(this));
         getCommand("resetallcheckpoints").setExecutor(new CheckpointCommands(this));
+        getCommand("purgeinactive").setExecutor(new CheckpointCommands(this));
         getCommand("discord").setExecutor(new Discord());
         getCommand("apply").setExecutor(new Apply());
         getCommand("clock").setExecutor(new Clock());
@@ -137,7 +131,8 @@ public final class HardcourseCheckpoints extends JavaPlugin implements Listener 
         getCommand("restartforupdate").setExecutor(new restartForUpdate(this));
         getCommand("setlevel").setExecutor(new setLevel());
         getCommand("reloadhardcourseconfig").setExecutor(new reloadHardcourseConfig(this));
-        getCommand("points").setExecutor(new PointsCommand());
+        getCommand("points").setExecutor(new PointsCommand(new PointsManager(this)));
+        getCommand("points").setTabCompleter(new PointsTabCompleter());
 
 
         setupWordsConfig();
