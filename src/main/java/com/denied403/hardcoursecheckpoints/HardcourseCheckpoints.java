@@ -4,17 +4,13 @@ import com.denied403.hardcoursecheckpoints.Commands.*;
 import com.denied403.hardcoursecheckpoints.Discord.HardcourseDiscord;
 import com.denied403.hardcoursecheckpoints.Events.*;
 import com.denied403.hardcoursecheckpoints.Chat.ChatReactions;
-import com.denied403.hardcoursecheckpoints.Points.PointsCommand;
-import com.denied403.hardcoursecheckpoints.Points.PointsManager;
-import com.denied403.hardcoursecheckpoints.Points.PointsTabCompleter;
+import com.denied403.hardcoursecheckpoints.Points.*;
 import com.denied403.hardcoursecheckpoints.Utils.PermissionChecker;
 import com.denied403.hardcoursecheckpoints.Utils.WordSyncListener;
-import com.denied403.hardcoursecheckpoints.Points.PointsShop;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import com.denied403.hardcoursecheckpoints.Points.ShopItem;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -136,6 +132,8 @@ public final class HardcourseCheckpoints extends JavaPlugin implements Listener 
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(wordSyncListener, this);
         getServer().getPluginManager().registerEvents(new BanListener(this), this);
+        getServer().getPluginManager().registerEvents(new JumpListener(pointsShop, this), this);
+
         WordSyncListener.updateFilterWords();
 
         getCommand("resetcheckpoint").setExecutor(new CheckpointCommands(this));

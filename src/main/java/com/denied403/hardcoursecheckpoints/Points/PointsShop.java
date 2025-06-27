@@ -40,7 +40,7 @@ public class PointsShop implements Listener {
             meta.setColor(Color.LIME);
 
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + "Gives you jump boost.");
+            lore.add(ChatColor.GRAY + "1 jump available");
             lore.add(ChatColor.YELLOW + "Cost: " + ChatColor.GOLD + "1500 Points");
             meta.setLore(lore);
 
@@ -91,20 +91,6 @@ public class PointsShop implements Listener {
         int cost = 1500;
         PointsManager pointsManager = plugin.getPointsManager();
         int currentPoints = pointsManager.getPoints(player.getUniqueId());
-
-        // Check if player already has the jump boots equipped
-        boolean hasBoots = false;
-        for (ItemStack armor : player.getInventory().getArmorContents()) {
-            if (armor != null && armor.isSimilar(getJumpBootsItem())) {
-                hasBoots = true;
-                break;
-            }
-        }
-
-        if (hasBoots) {
-            player.sendMessage(ChatColor.RED + "You already own the Jump Boost boots.");
-            return;
-        }
 
         if (currentPoints >= cost) {
             pointsManager.removePoints(player.getUniqueId(), cost);
