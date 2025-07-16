@@ -72,3 +72,7 @@ commands:
     usage: "/winnertp <player>"
     permission: hardcourse.winner
     aliases: wtp
+  ominoustrail:
+    description: Starts an ominous particle trail behind you.
+  endtrail:
+    description: Toggles End Rod particle wings
